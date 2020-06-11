@@ -16,6 +16,24 @@ module Bing
               [response_body[:campaigns][:campaign]].flatten.compact
             end
 
+            def get_campaign_criterions_by_ids(campaign_id=nil,criterion_ids=[],criterion_type=nil)
+              campaign_id ||= @campaign_id
+              response = call(:get_campaign_criterions_by_ids, {campaign_id: campaign_id,campaign_criterions_ids: criterion_ids,criterion_type: criterion_type})
+              response_body = response_body(response, __method__)
+              [response_body[:campaign_criterions][:campaign_criterion]].flatten.compact
+            end
+
+            def delete_campaign_criterions(criterion_ids=nil,campaign_id=nil,criterion_type=nil)
+              campaign_id ||= @campaign_id
+              response = call(:delete_campaign_criterions, {campaign_criterion_ids: {"long" => criterion_ids} ,campaign_id: campaign_id, criterion_type: criterion_type})
+            end
+
+            def get_geo_locations_file_url
+              response = call(:get_geo_locations_file_url, {version: "2.0",language_locale: "en" })
+              response_body = response_body(response, __method__)
+              response_body[:file_url]
+            end
+
             def get_campaigns_by_ids(account_id, campaign_ids)
               account_id ||= @account_id
               payload = {
